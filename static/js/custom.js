@@ -27,15 +27,16 @@ $(document).ready(function() {
 
     // Function to handle running the config
     $("button.run-config-button").click(function() {
-        // Add logic to start the config here
-        $.post("/start_config", $("form.save-config-form").serialize())
-            .done(function(response) {
-                console.log(response);
-                location.reload(true);
-            })
-            .fail(function(response) {
-                console.log(response);
-            });
+        if (validateConfig()) {
+            $.post("/start_config", $("form.save-config-form").serialize())
+                .done(function(response) {
+                    console.log(response);
+                    location.reload(true);
+                })
+                .fail(function(response) {
+                    console.log(response);
+                });
+        }
     });
 
     // Function to handle stopping the config
@@ -70,21 +71,18 @@ $(document).ready(function() {
     
     // Save config
     $("button.save-config-button").click(function() {
-        // Perform validation
-        if (validateConfig()) {
-            // If validation passes, proceed with saving config
-            $.post("/save_config", $("form.save-config-form").serialize())
-                .done(function(response) {
-                    console.log(response);
-                    location.reload(true);
-                })
-                .fail(function(response) {
-                    console.log(response);
-                });
-        }
+        // If validation passes, proceed with saving config
+        $.post("/save_config", $("form.save-config-form").serialize())
+            .done(function(response) {
+                console.log(response);
+                location.reload(true);
+            })
+            .fail(function(response) {
+                console.log(response);
+            });
     });
 
-    // Function to validate config settings
+    // Function to validate config settings before pressing run
     function validateConfig() {
         // Perform validation for each input field
         // Example validation: Check if minimum savings threshold is a positive number
@@ -144,8 +142,30 @@ $(document).ready(function() {
             return false; // Validation failed
         }
 
-        // If all validations pass, return true
-        return true;
+        // Check if either FB page id with access token or FB group link with at least 1 login is provided
+        var fbPageId = $("#fb_page_id").val();
+        var accessToken = $("#access_token").val();
+        var fbGroupLink = $("#fb_group_link").val();
+        var loginEmails = $("input[name='email[]']");
+        var loginPasswords = $("input[name='password[]']");
+        var hasValidLogin = false;
+    
+        // Loop through login fields to check if at least one entry has both email and password filled
+        for (var i = 0; i < loginEmails.length; i++) {
+            var email = $(loginEmails[i]).val();
+            var password = $(loginPasswords[i]).val();
+            if (email && password) {
+                hasValidLogin = true;
+                break;
+            }
+        }
+    
+        if ((fbPageId && accessToken) || (fbGroupLink && hasValidLogin)) {
+            return true; // Validation passed
+        } else {
+            alert("Please provide either FB page id with access token or FB group link with at least 1 login.");
+            return false; // Validation failed
+        }
     }
 
 
