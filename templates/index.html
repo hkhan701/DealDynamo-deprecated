@@ -1,0 +1,161 @@
+{% extends "layout.html" %}
+{% block body %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-8 mx-auto pt-5">
+            <h1 class="text-primary text-center">Welcome!</h1>
+            <div class="my-3">
+
+                {% if current_user.is_authenticated %}
+
+                <p class="w-100 text-center p-2 my-3 border border-success text-success rounded">You are logged in as {{
+                    current_user.display_name() }}</p>
+
+                    <!-- Instructions Section -->
+                <div class="container my-5">
+                    <div class="row">
+                        <div class="col-md-10 mx-auto">
+                            <body for="html-export">
+
+
+                                <div class="crossnote markdown-preview  ">
+
+                                    <h1 id="amazon-deals-posting-bot">Amazon Deals Posting Bot </h1>
+                                    <p>Welcome to the Amazon Deals Posting Bot! This application helps you automate the posting of
+                                        Amazon deals to a Facebook group and page. Below are the instructions to set up the application.
+                                    </p>
+                                    <h2 id="thresholds">Thresholds: </h2>
+                                    <ul>
+                                        <li><code>MINIMUM_SAVINGS_THRESHOLD</code>: Minimum savings percentage for a deal to be
+                                            considered.</li>
+                                        <li><code>CLEANUP_DAYS_THRESHOLD</code>: Number of days after which expired deals are removed
+                                            from the posted products sheet.</li>
+                                        <li><code>MAXIMUM_POSTS_PER_SESSION</code>: Maximum number of posts to be made in a single
+                                            session.</li>
+                                        <li><code>DELAY_BETWEEN_POSTS</code>: Delay (in seconds) between each post.</li>
+                                        <li><code>DELAY_BETWEEN_SESSIONS</code>: Delay (in seconds) between each session.</li>
+                                        <li><code>RECENTLY_UPDATED_HOUR_THRESHOLD</code>: Hour threshold to identify recently updated
+                                            products. Recommended you keep this at 5 for best results</li>
+                                        <li><code>SPECIAL_MESSAGE_THRESHOLD</code>: Threshold for adding a special message to high-value
+                                            deals.</li>
+                                    </ul>
+                                    <h2 id="toggles">Toggles: </h2>
+                                    <ul>
+                                        <li><code>RANDOM_IMAGE_TOGGLE</code>: If true randomly toggle between image with link and no
+                                            image but with hyperlink for each post, else use no image</li>
+                                    </ul>
+                                    <h2 id="amazon-affiliate-settings">Amazon Affiliate Settings: </h2>
+                                    <ul>
+                                        <li><code>ASSOCIATE_TAG</code>: Your Amazon Associate Tag.</li>
+                                    </ul>
+                                    <h2 id="posting-schedule">Posting Schedule: </h2>
+                                    <ul>
+                                        <li><code>START_TIME</code>: Start time for posting deals (format: "HH:MM").</li>
+                                        <li><code>END_TIME</code>: End time for posting deals (format: "HH:MM").</li>
+                                    </ul>
+                                    <h2 id="facebook-integration">Facebook Integration: </h2>
+                                    <ul>
+                                        <li><code>FB_GROUP_LINK</code>: Link to the Facebook group where deals will be posted.</li>
+                                        <li><code>LOGINS</code>: These logins will be randomized.
+                                            <ul>
+                                                <li>You can add up to 3 different <code>emails</code> and <code>passwords</code> for
+                                                    logging in to Facebook.</li>
+                                            </ul>
+                                        </li>
+
+                                        <li><code>FB_PAGE_ID</code>: ID of your Facebook page.</li>
+                                        <li><code>ACCESS_TOKEN</code>: Your Facebook access token.</li>
+                                    </ul>
+                                    <h1 id="integrating-facebook-page-posting">Integrating Facebook Page Posting </h1>
+                                    <p>In order to post to your facebook page, you will need an access token and your page ID. Follow
+                                        the steps below:</p>
+                                    <h2 id="opening-a-developer-account">Opening a Developer account </h2>
+                                    <ol>
+                                        <li>Go to <a
+                                                href="https://developers.facebook.com/apps">https://developers.facebook.com/apps</a>
+                                        </li>
+                                        <li>Click on Create App, click Other, then Business</li>
+                                        <li>Add an app name and click next.</li>
+                                        <li>Then navigate to <a
+                                                href="https://developers.facebook.com/tools/explorer/">https://developers.facebook.com/tools/explorer/</a>
+                                            and under Meta App select your app</li>
+                                        <li>After selecting the permissions, click on "Get Token" and choose "Get Page Access Token."
+                                            from the dropdown menu. You will be prompted to connect and link it to your group.</li>
+                                        <li>Afterwards click on User Token and you will click the name of the group in the dropdown
+                                            menu.</li>
+                                        <li>Search and add the required permissions for your access token. For our purposes, you'll need
+                                            at least</li>
+                                    </ol>
+                                    <ul>
+                                        <li>pages_manage_posts</li>
+                                        <li>pages_manage_engagement</li>
+                                        <li>pages_read_engagement</li>
+                                        <li>pages_read_user_engagement</li>
+                                        <li>pages_read_user_content</li>
+                                    </ul>
+                                    <ol start="8">
+                                        <li>Click on "Generate Access Token." Follow the authentication and linking. The permissions
+                                            should turn from green to grey.</li>
+                                        <li>Copy the generated access token and follow the steps below to generate a token that doesn't
+                                            expire.</li>
+                                    </ol>
+                                    <p>If you need more help, follow the video steps from 1:20 to 7:16 and copy the token generated.<br>
+                                        [<a
+                                            href="https://www.youtube.com/watch?v=s8c2SMpWDOo">https://www.youtube.com/watch?v=s8c2SMpWDOo</a>]
+                                    </p>
+                                    <h2 id="generating-a-never-expiring-facebook-token">Generating a never expiring Facebook token </h2>
+                                    <p>Once you have your short-lived token you need to make it so it doesn't expire. Here is how to do
+                                        that:</p>
+                                    <ol>
+                                        <li>Go to <a
+                                                href="https://developers.facebook.com/tools/debug/accesstoken/">https://developers.facebook.com/tools/debug/accesstoken/</a>
+                                        </li>
+                                        <li>Input your short lived token</li>
+                                        <li>Click <code>Extend Access Token</code> at the bottom of the page, a new extented token
+                                            should generate.</li>
+                                        <li>Copy that extended token and paste it in the below url with your pageId, and hit in any
+                                            browser url <a
+                                                href="https://graph.facebook.com/%7Bpage_id%7D?fields=access_token&amp;access_token=%7Blong_lived_token%7D">https://graph.facebook.com/{page_id}?fields=access_token&amp;access_token={long_lived_token}</a>
+                                        </li>
+                                    </ol>
+                                    <p>Example (your access token will be much longer): <a
+                                            href="https://graph.facebook.com/4534820486389?fields=access_token&amp;access_token=JNJDPOSDN89320fdkopNhsDHUjnloJHSADJ">https://graph.facebook.com/4534820486389?fields=access_token&amp;access_token=JNJDPOSDN89320fdkopNhsDHUjnloJHSADJ</a>
+                                    </p>
+                                    <ol start="5">
+                                        <li>You will be greeted with a page that contains your new access token that does not expire.
+                                            Copy that into the <code>ACCESS_TOKEN</code> section.</li>
+                                        <li>You can check that token in access token debugger tool again and verify that the Expires
+                                            field will show never.</li>
+                                    </ol>
+                                    <h1 id="how-to-find-your-page-id">How to find your page ID </h1>
+                                    <ol>
+                                        <li>Go to <a
+                                                href="https://business.facebook.com/latest/home">https://business.facebook.com/latest/home</a>
+                                            and make sure you are on your facebook page</li>
+                                        <li>Once the page loads, you will notice the url contains asset_id=</li>
+                                        <li>Copy that ID number into your config settings under <code>FB_PAGE_ID</code>
+                                        </li>
+                                    </ol>
+                                    <h2 id="running-the-application">Running the Application </h2>
+                                    <p>After completing the setup steps and entering in your information in the profile tab
+                                        you can press run and the application will run for you. It may take a few minutes for it to start posting so please be patient.
+                                         Happy Posting!</p>
+
+                                </div>
+                            </body>
+                        </div>
+                    </div>
+                </div>
+
+                {% else %}
+                <a class="btn btn-primary my-3 w-100" href="{{ url_for('login') }}">Login</a>
+                <p>Don't have an account? <a href="{{ url_for('register') }}">Sign up here</a>.</p>
+                <hr class="my-3" />
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

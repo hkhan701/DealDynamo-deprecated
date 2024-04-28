@@ -1,0 +1,212 @@
+{% extends "layout.html" %}
+{% block body %}
+<div class="container">
+    <div class="row mb-5 pt-5">
+        <div class="col-lg-20">
+
+            <h1 class="mb-3">Welcome {{current_user.first_name + " " + current_user.last_name}}</h1>
+
+            <div class="table-responsive">
+                <div class="container mt-5">
+                    <h2 class="my-3 text-muted">Your details</h2>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <table class="table align-middle">
+                                <tbody>
+                                    <tr>
+                                        <td>Name</td>
+                                        <td>{{ ((current_user.title + " ") if current_user.title else "") + current_user.first_name + " " + current_user.last_name }}
+                                            {% if current_user.verified %}
+                                            <span class="text-primary mx-3">
+                                                <a class="edit-name-button" href="#" title="Edit name button" data-toggle="collapse" data-target="#edit-name">Edit</a>
+                                            </span>
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Email</td>
+                                        <td>{{ current_user.email }}
+                                            {% if current_user.verified %}
+                                            <span class="text-success mx-3">Verified</span>
+                                            {% else %}
+                                            <span class="text-danger mx-3">Not verified</span>
+                                            <form class="verify-form d-inline">
+                                                <!-- <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"></input>
+                                                <a class="verify-button d-inline" href="" title="Send verification email">Send verification email</a> -->
+                                            </form>
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                    <!-- <tr>
+                                        <td>Unique ID</td>
+                                        <td>{{ current_user.id }}</td>
+                                    </tr> -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-md-6">
+                            <div class="btn-group" role="group" aria-label="Config Controls">
+                                <button class="btn btn-primary run-config-button" type="button">Run</button>
+                                <button class="btn btn-danger stop-config-button" type="button">Stop</button>
+                            </div>
+                            <span id="config-status" class="ml-3">
+                                Config Status: 
+                                {% if current_user.running %}
+                                    <span class="badge badge-success">Running</span>
+                                {% else %}
+                                    <span class="badge badge-danger">Stopped</span>
+                                {% endif %}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="container mt-5">
+                    <div class="card">
+                        <div class="card-body">
+                            <h2 class="card-title">Config Settings</h2>
+                            <form class="save-config-form">
+
+                                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                                <button class="btn btn-primary mt-3 save-config-button" type="button">Save Config</button>
+                                    
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <h3>Thresholds</h3>
+                                        <div class="form-group">
+                                            <label for="minimum_savings_threshold">Minimum Savings Threshold</label>
+                                            <input class="form-control" type="number" id="minimum_savings_threshold" name="minimum_savings_threshold" placeholder="Enter minimum savings threshold" value="{{ current_config.minimum_savings_threshold }}">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="cleanup_days_threshold">Cleanup Days Threshold</label>
+                                            <input class="form-control" type="number" id="cleanup_days_threshold" name="cleanup_days_threshold" placeholder="Enter cleanup days threshold" value="{{ current_config.cleanup_days_threshold }}">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="maximum_posts_per_session">Maximum Posts Per Session</label>
+                                            <input class="form-control" type="number" id="maximum_posts_per_session" name="maximum_posts_per_session" placeholder="Enter maximum posts per session" value="{{ current_config.maximum_posts_per_session }}">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="delay_between_posts">Delay Between Posts (seconds)</label>
+                                            <input class="form-control" type="number" id="delay_between_posts" name="delay_between_posts" placeholder="Enter delay between posts in seconds" value="{{ current_config.delay_between_posts }}">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="delay_between_sessions">Delay Between Sessions (seconds)</label>
+                                            <input class="form-control" type="number" id="delay_between_sessions" name="delay_between_sessions" placeholder="Enter delay between sessions in seconds" value="{{ current_config.delay_between_sessions }}">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="recently_updated_hour_threshold">Recently Updated Hour Threshold</label>
+                                            <input class="form-control" type="number" id="recently_updated_hour_threshold" name="recently_updated_hour_threshold" placeholder="Enter recently updated hour threshold" value="{{ current_config.recently_updated_hour_threshold }}">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="special_message_threshold">Special Message Threshold</label>
+                                            <input class="form-control" type="number" id="special_message_threshold" name="special_message_threshold" placeholder="Enter special message threshold" value="{{ current_config.special_message_threshold }}">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <h3>Toggles</h3>
+                                        <div class="form-group form-check">
+                                            <input type="checkbox" class="form-check-input" id="random_image_toggle" name="random_image_toggle" {% if current_config.random_image_toggle[0] %}checked{% endif %}>
+                                            <label class="form-check-label" for="random_image_toggle">Random Image Toggle</label>
+                                        </div>
+                                        <h3>Amazon Affiliate Settings</h3>
+                                        <div class="form-group">
+                                            <label for="associate_tag">Associate Tag</label>
+                                            <input class="form-control" type="text" id="associate_tag" name="associate_tag" placeholder="Enter associate tag" value="{{ current_config.associate_tag }}">
+                                        </div>
+                                        <h3>Posting Schedule</h3>
+                                        <div class="form-group">
+                                            <label for="start_time">Start Time (HH:MM)</label>
+                                            <input class="form-control" type="text" id="start_time" name="start_time" pattern="^(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$" title="Please enter a valid time format (HH:MM)" placeholder="HH:MM" value="{{ current_config.start_time }}">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="end_time">End Time (HH:MM)</label>
+                                            <input class="form-control" type="text" id="end_time" name="end_time" pattern="^(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$" title="Please enter a valid time format (HH:MM)" placeholder="HH:MM" value="{{ current_config.end_time }}">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <h3>Facebook Page Integration</h3>
+                                        <div class="form-group">
+                                            <label for="fb_page_id">Facebook Page ID</label>
+                                            <input class="form-control" type="text" id="fb_page_id" name="fb_page_id" placeholder="Enter Facebook page ID" value="{{ current_config.fb_page_id }}">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="access_token">Access Token</label>
+                                            <input class="form-control" type="text" id="access_token" name="access_token" placeholder="Enter Access Token" value="{{ current_config.access_token }}">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <h3>Facebook Group Integration</h3>
+                                        <div class="form-group">
+                                            <label for="fb_group_link">Facebook Group Link</label>
+                                            <input class="form-control" type="text" id="fb_group_link" name="fb_group_link" placeholder="Enter Facebook group link" value="{{ current_config.fb_group_link }}">
+                                        </div>
+                                        <h5>Facebook Logins</h5>
+                                        <p>Enter your Facebook login details below. These will be used to post in your Facebook group. You can add up to 3 logins.</p>
+                                        <div class="form-group login">
+                                            <label>Email:</label>
+                                            <input type="email" class="form-control" name="email[]" placeholder="Enter email" value="{{ current_config.logins[0].email }}">
+                                            <label>Password:</label>
+                                            <input type="text" class="form-control" name="password[]" placeholder="Enter password" value="{{ current_config.logins[0].password }}">
+                                        </div>
+                                        <div class="form-group login">
+                                            <label>Email:</label>
+                                            <input type="email" class="form-control" name="email[]" placeholder="Enter email" value="{{ current_config.logins[1].email }}">
+                                            <label>Password:</label>
+                                            <input type="text" class="form-control" name="password[]" placeholder="Enter password" value="{{ current_config.logins[1].password }}">
+                                        </div>
+                                        <div class="form-group login">
+                                            <label>Email:</label>
+                                            <input type="email" class="form-control" name="email[]" placeholder="Enter email" value="{{ current_config.logins[2].email }}">
+                                            <label>Password:</label>
+                                            <input type="text" class="form-control" name="password[]" placeholder="Enter password" value="{{ current_config.logins[2].password }}">
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                
+                <div id="edit-name" class="collapse" aria-expanded="false">
+                    <form class="form-inline change-name-form">
+
+                        <label class="sr-only" for="first_name">First name</label>
+                        <input type="text" class="form-control m-1" name="first_name" placeholder="First name" value="{{ current_user.first_name }}" required>
+
+                        <label class="sr-only" for="last_name">Last name</label>
+                        <input type="text" class="form-control m-1" name="last_name" placeholder="Last name" value="{{ current_user.last_name }}" required>
+
+                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                        <button type="button" class="btn btn-primary m-1 change-name-button">Update</button>
+
+                        <button class="btn btn-danger m-1" data-toggle="collapse" data-target="#edit-name"><i class="far fa-times"></i></button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row row mb-5">
+        <div class="col-md-8">
+            <div class="card border border-secondary bg-light account-card">
+                <div class="card-body">
+                    <h2 class="mb-3 card-title">Account management</h2>
+                    <p class="card-text">Click the button below to permanently delete your account.</p>
+                    <button class="btn btn-warning w-100 mb-3 first-delete" data-toggle="collapse" data-target=".delete-account">Delete account</button>
+                    <p class="card-text delete-warning">Deleting your account is irreversible. All of your data, including notes and messages (sent and received) will be permanently deleted!</p>
+                    <div class="delete-account collapse" aria-expanded="false">
+                        <form class="delete-account-form">
+                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                            <button class="second-delete btn btn-danger w-100"><i class="far fa-exclamation-triangle mr-3"></i>Click here to delete!<i class="far fa-exclamation-triangle ml-3"></i></button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+{% endblock %}
