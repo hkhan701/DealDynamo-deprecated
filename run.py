@@ -1,5 +1,3 @@
-# MODULE IMPORTS
-import configparser
 # Flask modules
 from flask import Flask, render_template, request, url_for, request, redirect, abort
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
@@ -11,15 +9,13 @@ from flask_wtf.csrf import CSRFProtect
 # Other modules
 from urllib.parse import urlparse, urljoin
 
-import json
-import sys
 import os
 
 # Local imports
 from user import User, Anonymous
 
-from email_utility import send_email, send_registration_email, send_message_email
-from verification import confirm_token
+# from email_utility import send_email, send_registration_email, send_message_email
+# from verification import confirm_token
 
 
 # Create app
@@ -77,7 +73,6 @@ login_manager.login_view = "login"
 @app.route('/')
 def index():
     return render_template('index.html')
-
 
 # Login
 @app.route('/login', methods=['GET', 'POST'])
@@ -151,30 +146,12 @@ def register():
     return render_template('register.html', error=request.args.get("error"))
 
 
-# Confirm email
-@app.route('/confirm/<token>', methods=['GET'])
-def confirm_email(token):
-    logout_user()
-    try:
-        email = confirm_token(token)
-        if email:
-            if mongo.db.users.update_one({"email": email}, {"$set": {"verified": True}}):
-                return render_template('confirm.html', success=True)
-    except:
-        return render_template('confirm.html', success=False)
-    else:
-        return render_template('confirm.html', success=False)
-
-
-# Verification email
-@app.route('/verify', methods=['POST'])
+# Logout
+@app.route('/logout', methods=['GET'])
 @login_required
-def send_verification_email():
-    if current_user.verified == False:
-        send_registration_email(current_user)
-        return "Verification email sent"
-    else:
-        return "Your email address is already verified"
+def logout():
+    logout_user()
+    return redirect(url_for('index'))
 
 
 @app.route('/profile', methods=['GET'])
@@ -249,6 +226,7 @@ def start_config():
     users.update_one({"id": current_user.id}, {"$set": {"running": True}})
     return "Config started"
 
+
 # Route to stop the config
 @app.route('/stop_config', methods=['POST'])
 @login_required
@@ -258,26 +236,46 @@ def stop_config():
     users.update_one({"id": current_user.id}, {"$set": {"running": False}})
     return "Config stopped"
 
+
+
 # Messages
-@app.route('/messages', methods=['GET'])
-@login_required
-def messages():
-    all_users = mongo.db.users.find(
-        {"id": {"$ne": current_user.id}}, {'_id': 0})
-    inbox_messages = mongo.db.messages.find(
-        {"to_id": current_user.id, "deleted": False}).sort("timestamp", -1)
-    sent_messages = mongo.db.messages.find(
-        {"from_id": current_user.id, "deleted": False, "hidden_for_sender": False}).sort("timestamp", -1)
-    return render_template('messages.html', users=all_users, inbox_messages=inbox_messages, sent_messages=sent_messages)
+# @app.route('/messages', methods=['GET'])
+# @login_required
+# def messages():
+#     all_users = mongo.db.users.find(
+#         {"id": {"$ne": current_user.id}}, {'_id': 0})
+#     inbox_messages = mongo.db.messages.find(
+#         {"to_id": current_user.id, "deleted": False}).sort("timestamp", -1)
+#     sent_messages = mongo.db.messages.find(
+#         {"from_id": current_user.id, "deleted": False, "hidden_for_sender": False}).sort("timestamp", -1)
+#     return render_template('messages.html', users=all_users, inbox_messages=inbox_messages, sent_messages=sent_messages)
 
 
-# Logout
-@app.route('/logout', methods=['GET'])
-@login_required
-def logout():
-    logout_user()
-    return redirect(url_for('index'))
 
+# Confirm email
+# @app.route('/confirm/<token>', methods=['GET'])
+# def confirm_email(token):
+#     logout_user()
+#     try:
+#         email = confirm_token(token)
+#         if email:
+#             if mongo.db.users.update_one({"email": email}, {"$set": {"verified": True}}):
+#                 return render_template('confirm.html', success=True)
+#     except:
+#         return render_template('confirm.html', success=False)
+#     else:
+#         return render_template('confirm.html', success=False)
+
+
+# Verification email
+# @app.route('/verify', methods=['POST'])
+# @login_required
+# def send_verification_email():
+#     if current_user.verified == False:
+#         send_registration_email(current_user)
+#         return "Verification email sent"
+#     else:
+#         return "Your email address is already verified"
 
 # Send message
 # @app.route('/send_message', methods=['POST'])
