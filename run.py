@@ -33,7 +33,6 @@ app = Flask(__name__)
 app.secret_key = os.environ.get('SECRET_KEY')
 print(os.environ.get('SECRET_KEY'))
 app.config['MONGO_DBNAME'] = os.environ.get('MONGO_DBNAME') # os.environ.get('MONGO_DBNAME')
-
 app.config['MONGO_URI'] = os.environ.get('MONGO_URI').strip('\'"') #default['MONGO_URI']
 app.config['PREFERRED_URL_SCHEME'] = "https"
 
@@ -372,10 +371,12 @@ def is_safe_url(target):
     return test_url.scheme in ('http', 'https') and \
         ref_url.netloc == test_url.netloc
 
+if __name__ == '__main__':
+    app.run(debug=True)
 
 # Heroku environment
-if os.environ.get('APP_LOCATION') == 'vercel':
-    port = int(os.environ.get("PORT", 5000))
-    app.run(host="0.0.0.0", port=port)
-else:
-    app.run(host='localhost', port=8080, debug=True)
+# if os.environ.get('APP_LOCATION') == 'vercel':
+#     port = int(os.environ.get("PORT", 5000))
+#     app.run(host="0.0.0.0", port=port)
+# else:
+#     app.run(host='localhost', port=8080, debug=True)
