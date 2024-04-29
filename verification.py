@@ -1,12 +1,8 @@
 from itsdangerous import URLSafeTimedSerializer
-import configparser
+import os
 
-# Configuration
-config = configparser.ConfigParser()
-config.read('configuration.ini')
-default = config['DEFAULT']
-SECRET_KEY = default['SECRET_KEY']
-SECURITY_PASSWORD_SALT = default['SECURITY_PASSWORD_SALT']
+SECRET_KEY = os.environ.get('SECRET_KEY')
+SECURITY_PASSWORD_SALT = os.environ.get('SECURITY_PASSWORD_SALT')
 
 def generate_confirmation_token(email):
     serializer = URLSafeTimedSerializer(SECRET_KEY)
