@@ -26,12 +26,17 @@ from verification import confirm_token
 app = Flask(__name__)
 
 # Configuration
-config = configparser.ConfigParser()
-config.read('configuration.ini')
-default = config['DEFAULT']
-app.secret_key = default['SECRET_KEY']
-app.config['MONGO_DBNAME'] = default['MONGO_DBNAME'] # os.environ.get('MONGO_DBNAME')
-app.config['MONGO_URI'] = default['MONGODB_URI'].strip('\'"') #default['MONGO_URI']
+# config = configparser.ConfigParser()
+# config.read('configuration.ini')
+# default = config['DEFAULT']
+# app.secret_key = default['SECRET_KEY']
+# app.config['MONGO_DBNAME'] = default['MONGO_DBNAME'] # os.environ.get('MONGO_DBNAME')
+# app.config['MONGO_URI'] = default['MONGODB_URI'].strip('\'"') #default['MONGO_URI']
+# app.config['PREFERRED_URL_SCHEME'] = "https"
+
+app.secret_key = os.environ.get('SECRET_KEY')
+app.config['MONGO_DBNAME'] = os.environ.get('MONGO_DBNAME') # os.environ.get('MONGO_DBNAME')
+app.config['MONGO_URI'] = os.environ.get('MONGO_URI').strip('\'"') #default['MONGO_URI']
 app.config['PREFERRED_URL_SCHEME'] = "https"
 
 # Create Pymongo
