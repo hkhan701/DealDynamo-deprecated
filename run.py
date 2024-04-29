@@ -31,11 +31,10 @@ app = Flask(__name__)
 # app.config['PREFERRED_URL_SCHEME'] = "https"
 
 app.secret_key = os.environ.get('SECRET_KEY')
-print("the secret key is")
 print(os.environ.get('SECRET_KEY'))
 app.config['MONGO_DBNAME'] = os.environ.get('MONGO_DBNAME') # os.environ.get('MONGO_DBNAME')
 
-app.config['MONGO_URI'] = os.environ.get('MONGODB_URI').strip('\'"') #default['MONGO_URI']
+app.config['MONGO_URI'] = os.environ.get('MONGO_URI').strip('\'"') #default['MONGO_URI']
 app.config['PREFERRED_URL_SCHEME'] = "https"
 
 # Create Pymongo
