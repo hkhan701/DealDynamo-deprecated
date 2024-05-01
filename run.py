@@ -10,6 +10,8 @@ from flask_wtf.csrf import CSRFProtect
 from urllib.parse import urlparse, urljoin
 
 import os
+from dotenv import load_dotenv
+load_dotenv()
 
 # Local imports
 from user import User, Anonymous
@@ -78,7 +80,7 @@ def login():
     if request.method == 'GET':
         if current_user.is_authenticated:
             # Redirect to index if already authenticated
-            return redirect(url_for('/index'))
+            return redirect(url_for('index'))
         # Render login page
         return render_template('login.html', error=request.args.get("error"))
     # Retrieve user from database
@@ -97,7 +99,7 @@ def login():
                 return abort(400)
 
             # Go to profile page after login
-            return redirect(next or url_for('/index'))
+            return redirect(next or url_for('index'))
 
     # Redirect to login page on error
     return redirect(url_for('login', error=1))
@@ -132,7 +134,7 @@ def register():
             if users.insert_one(user_data_to_save):
                 login_user(new_user)
                 # send_registration_email(new_user)
-                return redirect(url_for('profile'))
+                return redirect(url_for('index'))
             else:
                 # Handle database error
                 return redirect(url_for('register', error=2))
