@@ -19,18 +19,8 @@ from user import User, Anonymous
 # from email_utility import send_email, send_registration_email, send_message_email
 # from verification import confirm_token
 
-
 # Create app
 app = Flask(__name__)
-
-# Configuration
-# config = configparser.ConfigParser()
-# config.read('configuration.ini')
-# default = config['DEFAULT']
-# app.secret_key = default['SECRET_KEY']
-# app.config['MONGO_DBNAME'] = default['MONGO_DBNAME'] # os.environ.get('MONGO_DBNAME')
-# app.config['MONGO_URI'] = default['MONGO_URI'].strip('\'"') #default['MONGO_URI']
-# app.config['PREFERRED_URL_SCHEME'] = "https"
 
 app.secret_key = os.environ.get('SECRET_KEY')
 print(os.environ.get('SECRET_KEY'))
@@ -375,10 +365,3 @@ def is_safe_url(target):
 
 if __name__ == '__main__':
     app.run(debug=True)
-
-# Heroku environment
-# if os.environ.get('APP_LOCATION') == 'vercel':
-#     port = int(os.environ.get("PORT", 5000))
-#     app.run(host="0.0.0.0", port=port)
-# else:
-#     app.run(host='localhost', port=8080, debug=True)
