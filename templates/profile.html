@@ -26,15 +26,15 @@
                                     <tr>
                                         <td>Email</td>
                                         <td>{{ current_user.email }}
-                                            {% if current_user.verified %}
+                                            <!-- {% if current_user.verified %}
                                             <span class="text-success mx-3">Verified</span>
                                             {% else %}
                                             <span class="text-danger mx-3">Not verified</span>
                                             <form class="verify-form d-inline">
-                                                <!-- <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"></input>
-                                                <a class="verify-button d-inline" href="" title="Send verification email">Send verification email</a> -->
+                                                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"></input>
+                                                <a class="verify-button d-inline" href="" title="Send verification email">Send verification email</a>
                                             </form>
-                                            {% endif %}
+                                            {% endif %} -->
                                         </td>
                                     </tr>
                                     <!-- <tr>
@@ -62,6 +62,13 @@
                                     <span class="badge badge-danger">Stopped</span>
                                 {% endif %}
                             </span>
+                            <div class="note mt-2">
+                                <small>
+                                    After pressing "Run", wait for 5 minutes. Refresh to see if you see any posted deals on your Facebook group or page. 
+                                    If you refresh the page and notice the config status changed to 'Stopped', an error occurred. 
+                                    Please double-check your config information, or if the issue persists, <a href="mailto:hkhan701personal@gmail.com">contact support</a>. 
+                                </small>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -119,6 +126,7 @@
                                             <input class="form-control" type="text" id="associate_tag" name="associate_tag" placeholder="Enter associate tag" value="{{ current_config.associate_tag }}">
                                         </div>
                                         <h3>Posting Schedule</h3>
+                                        <p><b>Note:</b> This is based off CDT Timezone</p>
                                         <div class="form-group">
                                             <label for="start_time">Start Time (HH:MM)</label>
                                             <input class="form-control" type="text" id="start_time" name="start_time" pattern="^(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$" title="Please enter a valid time format (HH:MM)" placeholder="HH:MM" value="{{ current_config.start_time }}">
