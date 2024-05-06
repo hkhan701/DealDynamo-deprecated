@@ -105,8 +105,8 @@ $(document).ready(function() {
         }
     
         var delayBetweenPosts = parseInt($("#delay_between_posts").val());
-        if (isNaN(delayBetweenPosts) || delayBetweenPosts <= 0) {
-            alert("Delay between posts must be a positive number.");
+        if (isNaN(delayBetweenPosts) || delayBetweenPosts < 60) {
+            alert("Delay between posts must be at least 60 seconds.");
             return false; // Validation failed
         }
     
