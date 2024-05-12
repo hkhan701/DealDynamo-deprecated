@@ -87,31 +87,66 @@
                                         <h3>Thresholds</h3>
                                         <div class="form-group">
                                             <label for="minimum_savings_threshold">Minimum Savings Threshold</label>
-                                            <input class="form-control" type="number" id="minimum_savings_threshold" name="minimum_savings_threshold" placeholder="Enter minimum savings threshold" value="{{ current_config.minimum_savings_threshold }}">
+                                            <div class="input-group">
+                                                <input class="form-control" type="number" id="minimum_savings_threshold" name="minimum_savings_threshold" placeholder="Enter minimum savings threshold" value="{{ current_config.minimum_savings_threshold }}">
+                                                <div class="input-group-append">
+                                                    <span class="input-group-text" data-toggle="tooltip" data-placement="top" title="Enter the minimum amount of savings required for a deal to be considered"><i class="fas fa-question-circle"></i></span>
+                                                </div>
+                                            </div>
                                         </div>
                                         <div class="form-group">
                                             <label for="cleanup_days_threshold">Cleanup Days Threshold</label>
-                                            <input class="form-control" type="number" id="cleanup_days_threshold" name="cleanup_days_threshold" placeholder="Enter cleanup days threshold" value="{{ current_config.cleanup_days_threshold }}">
+                                            <div class="input-group">
+                                                <input class="form-control" type="number" id="cleanup_days_threshold" name="cleanup_days_threshold" placeholder="Enter cleanup days threshold" value="{{ current_config.cleanup_days_threshold }}">
+                                                <div class="input-group-append">
+                                                    <span class="input-group-text" data-toggle="tooltip" data-placement="top" title="Enter the number of days after which inactive deals should be cleaned up"><i class="fas fa-question-circle"></i></span>
+                                                </div>
+                                            </div>
                                         </div>
                                         <div class="form-group">
                                             <label for="maximum_posts_per_session">Maximum Posts Per Session</label>
-                                            <input class="form-control" type="number" id="maximum_posts_per_session" name="maximum_posts_per_session" placeholder="Enter maximum posts per session" value="{{ current_config.maximum_posts_per_session }}">
+                                            <div class="input-group">
+                                                <input class="form-control" type="number" id="maximum_posts_per_session" name="maximum_posts_per_session" placeholder="Enter maximum posts per session" value="{{ current_config.maximum_posts_per_session }}">
+                                                <div class="input-group-append">
+                                                    <span class="input-group-text" data-toggle="tooltip" data-placement="top" title="Enter the maximum number of posts allowed per session"><i class="fas fa-question-circle"></i></span>
+                                                </div>
+                                            </div>
                                         </div>
                                         <div class="form-group">
                                             <label for="delay_between_posts">Delay Between Posts (seconds)</label>
-                                            <input class="form-control" type="number" id="delay_between_posts" name="delay_between_posts" placeholder="Enter delay between posts in seconds" value="{{ current_config.delay_between_posts }}">
+                                            <div class="input-group">
+                                                <input class="form-control" type="number" id="delay_between_posts" name="delay_between_posts" placeholder="Enter delay between posts in seconds" value="{{ current_config.delay_between_posts }}">
+                                                <div class="input-group-append">
+                                                    <span class="input-group-text" data-toggle="tooltip" data-placement="top" title="Enter the delay between each post in seconds"><i class="fas fa-question-circle"></i></span>
+                                                </div>
+                                            </div>
                                         </div>
                                         <div class="form-group">
                                             <label for="delay_between_sessions">Delay Between Sessions (seconds)</label>
-                                            <input class="form-control" type="number" id="delay_between_sessions" name="delay_between_sessions" placeholder="Enter delay between sessions in seconds" value="{{ current_config.delay_between_sessions }}">
+                                            <div class="input-group">
+                                                <input class="form-control" type="number" id="delay_between_sessions" name="delay_between_sessions" placeholder="Enter delay between sessions in seconds" value="{{ current_config.delay_between_sessions }}">
+                                                <div class="input-group-append">
+                                                    <span class="input-group-text" data-toggle="tooltip" data-placement="top" title="Enter the delay between each session in seconds"><i class="fas fa-question-circle"></i></span>
+                                                </div>
+                                            </div>
                                         </div>
                                         <div class="form-group">
                                             <label for="recently_updated_hour_threshold">Recently Updated Hour Threshold</label>
-                                            <input class="form-control" type="number" id="recently_updated_hour_threshold" name="recently_updated_hour_threshold" placeholder="Enter recently updated hour threshold" value="{{ current_config.recently_updated_hour_threshold }}">
+                                            <div class="input-group">
+                                                <input class="form-control" type="number" id="recently_updated_hour_threshold" name="recently_updated_hour_threshold" placeholder="Enter recently updated hour threshold" value="{{ current_config.recently_updated_hour_threshold }}">
+                                                <div class="input-group-append">
+                                                    <span class="input-group-text" data-toggle="tooltip" data-placement="top" title="Enter the hour threshold for recently updated deals"><i class="fas fa-question-circle"></i></span>
+                                                </div>
+                                            </div>
                                         </div>
                                         <div class="form-group">
                                             <label for="special_message_threshold">Special Message Threshold</label>
-                                            <input class="form-control" type="number" id="special_message_threshold" name="special_message_threshold" placeholder="Enter special message threshold" value="{{ current_config.special_message_threshold }}">
+                                            <div class="input-group">
+                                                <input class="form-control" type="number" id="special_message_threshold" name="special_message_threshold" placeholder="Enter special message threshold" value="{{ current_config.special_message_threshold }}">
+                                                <div class="input-group-append">
+                                                    <span class="input-group-text" data-toggle="tooltip" data-placement="top" title="Enter the threshold for special messages"><i class="fas fa-question-circle"></i></span>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
@@ -119,11 +154,12 @@
                                         <div class="form-group form-check">
                                             <input type="checkbox" class="form-check-input" id="random_image_toggle" name="random_image_toggle" {% if current_config.random_image_toggle[0] %}checked{% endif %}>
                                             <label class="form-check-label" for="random_image_toggle">Random Image Toggle</label>
+                                            <span class="ml-2" data-toggle="tooltip" data-placement="top" title="If the toggle is turned on, each post will randomly alternate between having an image with a clickable link and having no image but still having a clickable link. If the toggle is turned off, posts will just have a clickable link."><i class="fas fa-question-circle"></i></span>
                                         </div>
                                         <h3>Amazon Affiliate Settings</h3>
                                         <div class="form-group">
                                             <label for="associate_tag">Associate Tag</label>
-                                            <input class="form-control" type="text" id="associate_tag" name="associate_tag" placeholder="Enter associate tag" value="{{ current_config.associate_tag }}">
+                                            <input class="form-control" type="text" id="associate_tag" name="associate_tag" placeholder="Enter your Amazon associate tag" value="{{ current_config.associate_tag }}">
                                         </div>
                                         <h3>Posting Schedule</h3>
                                         <p><b>Note:</b> This is based off CDT Timezone</p>
@@ -153,26 +189,50 @@
                                             <label for="fb_group_link">Facebook Group Link</label>
                                             <input class="form-control" type="text" id="fb_group_link" name="fb_group_link" placeholder="Enter Facebook group link" value="{{ current_config.fb_group_link }}">
                                         </div>
-                                        <h5>Facebook Logins</h5>
-                                        <p>Enter your Facebook login details below. These will be used randomly to post in your Facebook group. You can add up to 3 logins.</p>
-                                        <div class="form-group login">
-                                            <label>Email:</label>
-                                            <input type="email" class="form-control" name="email[]" placeholder="Enter email" value="{{ current_config.logins[0].email }}">
-                                            <label>Password:</label>
-                                            <input type="text" class="form-control" name="password[]" placeholder="Enter password" value="{{ current_config.logins[0].password }}">
-                                        </div>
-                                        <div class="form-group login">
-                                            <label>Email:</label>
-                                            <input type="email" class="form-control" name="email[]" placeholder="Enter email" value="{{ current_config.logins[1].email }}">
-                                            <label>Password:</label>
-                                            <input type="text" class="form-control" name="password[]" placeholder="Enter password" value="{{ current_config.logins[1].password }}">
-                                        </div>
-                                        <div class="form-group login">
-                                            <label>Email:</label>
-                                            <input type="email" class="form-control" name="email[]" placeholder="Enter email" value="{{ current_config.logins[2].email }}">
-                                            <label>Password:</label>
-                                            <input type="text" class="form-control" name="password[]" placeholder="Enter password" value="{{ current_config.logins[2].password }}">
-                                        </div>
+                                            <h5>Facebook Logins</h5>
+                                            <p>Enter your Facebook login details below. These will be used randomly to post in your Facebook group. You can add up to 3 logins.</p>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group login">
+                                                        <label>Email:</label>
+                                                        <input type="email" class="form-control" name="email[]" placeholder="Enter email" value="{{ current_config.logins[0].email }}">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group login">
+                                                        <label>Password:</label>
+                                                        <input type="text" class="form-control" name="password[]" placeholder="Enter password" value="{{ current_config.logins[0].password }}">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group login">
+                                                        <label>Email:</label>
+                                                        <input type="email" class="form-control" name="email[]" placeholder="Enter email" value="{{ current_config.logins[1].email }}">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group login">
+                                                        <label>Password:</label>
+                                                        <input type="text" class="form-control" name="password[]" placeholder="Enter password" value="{{ current_config.logins[1].password }}">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group login">
+                                                        <label>Email:</label>
+                                                        <input type="email" class="form-control" name="email[]" placeholder="Enter email" value="{{ current_config.logins[2].email }}">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group login">
+                                                        <label>Password:</label>
+                                                        <input type="text" class="form-control" name="password[]" placeholder="Enter password" value="{{ current_config.logins[2].password }}">
+                                                    </div>
+                                                </div>
+                                            </div>
                                     </div>
                                 </div>
                             </form>
