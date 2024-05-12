@@ -1,6 +1,25 @@
 $(document).ready(function() {
     console.log("Ready!");
 
+    // Get extended access token
+    $("button.get-extended-token").click(function() {
+
+        // Retrieve values from input fields
+        var pageId = $("#pageId").val();
+        var extendedToken = $("#extended_token").val();
+
+        // Check if both fields are not empty
+        if (pageId.trim() === '' || extendedToken.trim() === '') {
+            alert("Please enter both Page ID and Extended Token.");
+            return; // Stop further execution
+        }
+
+        // Construct the long-lived token URL
+        var longLivedTokenUrl = "https://graph.facebook.com/" + pageId + "?fields=access_token&access_token=" + extendedToken;
+
+        // Open the long-lived token URL in a new tab
+        window.open(longLivedTokenUrl, '_blank');
+    });
 
     // Manage edit-name-button text
     $('#edit-name').on('hide.bs.collapse', function() {
